@@ -1,3 +1,11 @@
+.blackBg {
+  background-color: black;
+}
+
+.pinkBg {
+  background-color: #e71959;
+}
+
 .App {
   text-align: center;
 }

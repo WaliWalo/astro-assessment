@@ -36,7 +36,7 @@ const channelSlice = createSlice({
 export const getAllChannels = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(setLoading());
-    const response = await fetch(`${process.env.API_URL}/all.json`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/all.json`);
     if (response.ok) {
       const data: IChannelsResponse = await response.json();
       if (data.responseCode >= 200 && data.responseCode <= 299) {
@@ -48,6 +48,7 @@ export const getAllChannels = () => async (dispatch: AppDispatch) => {
       dispatch(setError(response.statusText));
     }
   } catch (error) {
+    console.log(error);
     dispatch(setError(error));
   }
 };
@@ -57,7 +58,9 @@ export const getChannelDetails =
   (channelId: number) => async (dispatch: AppDispatch) => {
     try {
       dispatch(setLoading());
-      const response = await fetch(`${process.env.API_URL}/${channelId}.json`);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/${channelId}.json`
+      );
       if (response.ok) {
         const data: IChannelDetailsResponse = await response.json();
         if (data.responseCode >= 200 && data.responseCode <= 299) {
