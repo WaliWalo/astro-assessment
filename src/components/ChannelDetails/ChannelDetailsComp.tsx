@@ -1,8 +1,9 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Image, Button } from 'react-bootstrap';
 import { ISchedule } from '../../store/channel/types';
 import { IChannelDetailsProps } from './types';
+import './styles.css';
 // https://momentjs.com/
 function ChannelDetailsComp(props: IChannelDetailsProps) {
   const [schedule, setSchedule] = useState<Array<ISchedule> | null>(null);
@@ -18,15 +19,26 @@ function ChannelDetailsComp(props: IChannelDetailsProps) {
   }, [props.channel.schedule]);
 
   return (
-    <div>
-      <div>{props.channel.title}</div>
-      <div>{props.channel.description}</div>
-      <div>
+    <div className="mt-2">
+      <div id="detailsTitleContainer">
+        <div>
+          <Image src={props.channel.originalImage} />
+        </div>
+        <div id="detailsTitle">
+          <span>CH{props.channel.stbNumber}</span>
+          <span>
+            <strong>{props.channel.title}</strong>
+          </span>
+        </div>
+      </div>
+      <div id="detailsDescription">{props.channel.description}</div>
+      <div id="daysContainer">
         {props.channel.schedule && (
           <>
             {Object.keys(props.channel.schedule).map((key) => {
               return (
                 <span
+                  key={key}
                   onClick={() =>
                     setSchedule(
                       props.channel.schedule[
@@ -34,21 +46,22 @@ function ChannelDetailsComp(props: IChannelDetailsProps) {
                       ].filter((times) => moment(times.datetime) > moment())
                     )
                   }
+                  className="mx-2"
                 >
-                  {moment(key).format('dddd')}
+                  <Button variant="light">{moment(key).format('dddd')}</Button>
                 </span>
               );
             })}
           </>
         )}
       </div>
-      <div>
+      <div id="timesTableContainer">
         <Table striped bordered hover>
           <tbody>
             {schedule &&
               schedule.map((times: ISchedule) => {
                 return (
-                  <tr>
+                  <tr key={times.eventId}>
                     <td>{times.datetime.toString().substr(11, 5)}</td>
                     <td>{times.title}</td>
                   </tr>

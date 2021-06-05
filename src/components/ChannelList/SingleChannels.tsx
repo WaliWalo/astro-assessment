@@ -1,6 +1,5 @@
 import React from 'react';
 import { ISingleChannelsProp } from './types';
-import { Link } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 import './styles.css';
 import { Table } from 'react-bootstrap';

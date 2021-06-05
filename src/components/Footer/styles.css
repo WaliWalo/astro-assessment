@@ -1,0 +1,30 @@
+#footerContainer {
+  color: white;
+}
+
+.footerTop .col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerTop .col strong {
+  font-size: 1.2em;
+}
+
+.footerTop .col img {
+  height: 6em;
+  width: 11em;
+}
+
+.socialIcons {
+  display: flex;
+  flex-direction: row;
+}
+
+.socialIcons div {
+  margin-right: 1.2em;
+}
+
+.socialIcons div > svg {
+  font-size: 1.3em;
+}

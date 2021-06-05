@@ -1,0 +1,22 @@
+#detailsTitleContainer {
+  display: flex;
+}
+
+#detailsTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: 2em;
+}
+
+#detailsDescription {
+  margin-top: 1.5em;
+  font-size: 1.5em;
+}
+
+#daysContainer {
+  margin-top: 2em;
+}
+
+#timesTableContainer {
+  margin-top: 2em;
+}

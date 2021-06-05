@@ -24,7 +24,9 @@ function App() {
           <Route exact path="/channelDetails/:id" component={ChannelDetails} />
         </Switch>
       </div>
-      <Footer />
+      <div className="blackBg">
+        <Footer />
+      </div>
     </Router>
   );
 }
