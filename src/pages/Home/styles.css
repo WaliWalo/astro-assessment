@@ -1,0 +1,21 @@
+#accordionHeader {
+  text-align: center;
+}
+
+#sortBtns {
+  display: flex;
+  justify-content: center;
+}
+
+#sortBtns > button {
+  margin: 2em;
+}
+
+#checkBoxes {
+  display: flex;
+  justify-content: center;
+}
+
+#checkBoxes > div {
+  margin: 2em;
+}

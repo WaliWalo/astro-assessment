@@ -58,7 +58,7 @@ function ChannelDetailsComp(props: IChannelDetailsProps) {
       <div id="timesTableContainer">
         <Table striped bordered hover>
           <tbody>
-            {schedule &&
+            {schedule ? (
               schedule.map((times: ISchedule) => {
                 return (
                   <tr key={times.eventId}>
@@ -66,7 +66,10 @@ function ChannelDetailsComp(props: IChannelDetailsProps) {
                     <td>{times.title}</td>
                   </tr>
                 );
-              })}
+              })
+            ) : (
+              <h1>Sorry, no information available</h1>
+            )}
           </tbody>
         </Table>
       </div>

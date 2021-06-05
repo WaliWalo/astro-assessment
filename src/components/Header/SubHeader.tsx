@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
@@ -10,8 +10,23 @@ import {
   Image,
 } from 'react-bootstrap';
 import './styles.css';
+import { useAppDispatch } from '../../store/setup/store';
+import { search } from './../../utilities/filters';
+import { setChannels } from '../../store/channel/channelSlice';
 
 function SubHeader() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {}, []);
+
+  const searchFunction = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.value);
+    const filtered = await search(e.currentTarget.value);
+    if (filtered !== undefined) {
+      dispatch(setChannels(filtered));
+    }
+  };
+
   return (
     <Container>
       <Navbar bg="#e71959" expand="lg" className="headerNavbar">
@@ -50,7 +65,14 @@ function SubHeader() {
             <Nav.Link>Support</Nav.Link>
           </Nav>
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+            <FormControl
+              type="text"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                searchFunction(e)
+              }
+              placeholder="Search"
+              className="mr-sm-2"
+            />
             {/* <Button variant="outline-success">Search</Button> */}
           </Form>
         </Navbar.Collapse>

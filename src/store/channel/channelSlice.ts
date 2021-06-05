@@ -11,7 +11,10 @@ import {
 // types of state the slice could be in
 type SliceState =
   | { status: 'loading' }
-  | { status: 'finished'; data: Array<IChannel> | IChannelDetails }
+  | {
+      status: 'finished';
+      data: Array<IChannel> | IChannelDetails;
+    }
   | { status: 'error'; error: string };
 
 // initial state of slice
@@ -26,6 +29,7 @@ const channelSlice = createSlice({
       (state = { status: 'finished', data: action.payload }),
     setChannelDetails: (state, action: PayloadAction<IChannelDetails>) =>
       (state = { status: 'finished', data: action.payload }),
+
     setError: (state, action: PayloadAction<string>) =>
       (state = { status: 'error', error: action.payload }),
     setLoading: (state) => (state = { status: 'loading' }),
