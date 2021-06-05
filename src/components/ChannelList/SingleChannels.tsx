@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ISingleChannelsProp } from './types';
 import { Image } from 'react-bootstrap';
 import './styles.css';
 import { Table } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { Heart } from 'react-bootstrap-icons';
+import { useAppSelector, useAppDispatch } from './../../store/setup/store';
+import { getFavourites } from './../../store/fav/favSlice';
 
 function SingleChannels(props: ISingleChannelsProp) {
   let history = useHistory();
+  let dispatch = useAppDispatch();
+  const favs = useAppSelector((state) => state.fav);
+
+  useEffect(() => {
+    // dispatch(getFavourites());
+    console.log(localStorage.getItem('favs'));
+    if (localStorage.getItem('favs') === null) {
+      const newFavs = { favs: [] };
+      localStorage.setItem('favs', JSON.stringify(newFavs));
+    }
+  }, []);
+
+  const addToFav = () => {};
 
   return (
     <div
@@ -26,6 +42,9 @@ function SingleChannels(props: ISingleChannelsProp) {
             <strong>{props.channel.title}</strong>
           </span>
           <span>CH{props.channel.stbNumber}</span>
+          <span>
+            <Heart onClick={addToFav} />
+          </span>
         </div>
       </div>
       <hr></hr>

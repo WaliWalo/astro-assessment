@@ -71,23 +71,59 @@ export async function sortByChannelName() {
   }
 }
 
-export async function filterByCategory() {
+export async function filterByCategory(selectedCategories: string[]) {
   const channels: Array<IChannel> | undefined = await getAllChannels();
-  let sorted = [];
   if (channels !== undefined) {
+    let filtered: Array<IChannel> = [];
+    selectedCategories.forEach((category) => {
+      filtered = filtered.concat(
+        channels.filter((channel) => channel.category === category)
+      );
+    });
+    return filtered;
   }
 }
 
-export async function filterByLanguage() {
+export async function filterByLanguage(selectedLanguages: string[]) {
   const channels: Array<IChannel> | undefined = await getAllChannels();
-  let sorted = [];
   if (channels !== undefined) {
+    let filtered: Array<IChannel> = [];
+    selectedLanguages.forEach((language) => {
+      filtered = filtered.concat(
+        channels.filter((channel) => channel.language === language)
+      );
+    });
+    return filtered;
   }
 }
 
-export async function filterByResolution() {
+export async function filterByResolution(isHd: boolean) {
   const channels: Array<IChannel> | undefined = await getAllChannels();
-  let sorted = [];
   if (channels !== undefined) {
+    let filtered: Array<IChannel> = [];
+    filtered = filtered.concat(
+      channels.filter((channel) => channel.isHd === isHd)
+    );
+    return filtered;
+  }
+}
+
+export async function findCategories() {
+  const channels: Array<IChannel> | undefined = await getAllChannels();
+  if (channels !== undefined) {
+    const categories = channels
+      .map((channel) => channel.category)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    return categories;
+  }
+}
+
+export async function findLanguages() {
+  const channels: Array<IChannel> | undefined = await getAllChannels();
+  if (channels !== undefined) {
+    const languages = channels
+      .map((channel) => channel.language)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    return languages;
   }
 }

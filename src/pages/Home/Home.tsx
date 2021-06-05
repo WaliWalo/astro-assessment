@@ -1,16 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, Button, Card, Form } from 'react-bootstrap';
 import ChannelList from '../../components/ChannelList/ChannelList';
 import { useAppDispatch } from '../../store/setup/store';
 import './styles.css';
 import { useAppSelector } from './../../store/setup/store';
-import { sortByChannelName, sortByStbNumber } from '../../utilities/filters';
-import { setChannels } from '../../store/channel/channelSlice';
+import {
+  findCategories,
+  sortByChannelName,
+  sortByStbNumber,
+  findLanguages,
+  filterByCategory,
+  filterByLanguage,
+  filterByResolution,
+} from '../../utilities/filters';
+import { getAllChannels, setChannels } from '../../store/channel/channelSlice';
 
 function Home() {
   const dispatch = useAppDispatch();
   const channels = useAppSelector((state) => state.channels.data);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
+  const [categories, setCategories] = useState<Array<string>>([]);
+  const [languages, setLanguages] = useState<Array<string>>([]);
+  const [hd, setHd] = useState<boolean>(false);
+  const [checkedCategories, setCheckedCategories] = useState<Array<string>>([]);
+  const [checkedLanguages, setCheckedLanguages] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    async function getCategories() {
+      const categories = await findCategories();
+      if (categories !== undefined) {
+        setCategories(categories);
+      }
+    }
+    async function getLanguages() {
+      const languages = await findLanguages();
+      if (languages !== undefined) {
+        setLanguages(languages);
+      }
+    }
+    getCategories();
+    getLanguages();
+  }, []);
 
   const sortName = async () => {
     const sorted = await sortByChannelName();
@@ -36,6 +66,63 @@ function Home() {
     setToggleSort(!toggleSort);
   };
 
+  const filterCategory = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let checked = [];
+    if (e.currentTarget.checked) {
+      checkedCategories.push(e.currentTarget.value);
+      checked = checkedCategories;
+      const newChannels = await filterByCategory(checked);
+      if (newChannels !== undefined) {
+        dispatch(setChannels(newChannels));
+      }
+    } else {
+      checkedCategories.splice(
+        checkedCategories.indexOf(e.currentTarget.value),
+        1
+      );
+      checked = checkedCategories;
+      const newChannels = await filterByCategory(checked);
+      if (newChannels !== undefined) {
+        dispatch(setChannels(newChannels));
+      }
+      if (checked.length === 0) {
+        dispatch(getAllChannels());
+      }
+    }
+  };
+
+  const filterLanguage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let checked = [];
+    if (e.currentTarget.checked) {
+      checkedLanguages.push(e.currentTarget.value);
+      checked = checkedLanguages;
+      const newChannels = await filterByLanguage(checked);
+      if (newChannels !== undefined) {
+        dispatch(setChannels(newChannels));
+      }
+    } else {
+      checkedLanguages.splice(
+        checkedLanguages.indexOf(e.currentTarget.value),
+        1
+      );
+      checked = checkedLanguages;
+      const newChannels = await filterByLanguage(checked);
+      if (newChannels !== undefined) {
+        dispatch(setChannels(newChannels));
+      }
+      if (checked.length === 0) {
+        dispatch(getAllChannels());
+      }
+    }
+  };
+
+  const filterHd = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newChannels = await filterByResolution(e.currentTarget.checked);
+    if (newChannels !== undefined) {
+      dispatch(setChannels(newChannels));
+    }
+  };
+
   return (
     <div>
       <Accordion>
@@ -56,25 +143,46 @@ function Home() {
                 </Button>
               </div>
               <div id="checkBoxes">
-                <div>
-                  <Form.Check
-                    type={'checkbox'}
-                    id={`categoryChk`}
-                    label={`Filter by Category`}
-                  />
+                <div id="categories">
+                  {categories.length > 0 &&
+                    categories.map((category: string, index: number) => (
+                      <div key={index}>
+                        <Form.Check
+                          type={'checkbox'}
+                          id={`categoryChk${index}`}
+                          label={`${category}`}
+                          value={category}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            filterCategory(e)
+                          }
+                        />
+                      </div>
+                    ))}
                 </div>
-                <div>
-                  <Form.Check
-                    type={'checkbox'}
-                    id={`languageChk`}
-                    label={`Filter by Language`}
-                  />
+                <div id="languages">
+                  {languages.length > 0 &&
+                    languages.map((language: string, index: number) => (
+                      <div key={index}>
+                        <Form.Check
+                          type={'checkbox'}
+                          id={`languageChk${index}`}
+                          label={`${language}`}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            filterLanguage(e)
+                          }
+                          value={language}
+                        />
+                      </div>
+                    ))}
                 </div>
-                <div>
+                <div id="resolution">
                   <Form.Check
                     type={'checkbox'}
                     id={`resolutionChk`}
-                    label={`Filter by Resolution`}
+                    label={`HD`}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      filterHd(e)
+                    }
                   />
                 </div>
               </div>

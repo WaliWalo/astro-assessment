@@ -25,12 +25,15 @@ function ChannelList() {
         <>
           <Container>
             <Row>
-              {channels.data.length > 0 &&
+              {channels.data.length > 0 ? (
                 channels.data.map((channel: IChannel) => (
                   <Col key={channel.id}>
                     <SingleChannels channel={channel} key={channel.id} />
                   </Col>
-                ))}
+                ))
+              ) : (
+                <h1>Sorry nothing found</h1>
+              )}
             </Row>
           </Container>
         </>

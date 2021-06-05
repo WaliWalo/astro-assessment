@@ -14,8 +14,20 @@
 #checkBoxes {
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
-#checkBoxes > div {
-  margin: 2em;
+#categories,
+#languages,
+#resolution {
+  display: flex;
+  justify-content: center;
+}
+
+#checkBoxes > #categories > div {
+  margin: 1em;
+}
+
+#checkBoxes > #languages > div {
+  margin: 1em;
 }
