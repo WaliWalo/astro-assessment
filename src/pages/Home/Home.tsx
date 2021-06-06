@@ -158,10 +158,10 @@ function Home() {
                 )}
               </div>
               <div id="checkBoxes">
-                <div id="categories">
+                <div id="categories" className="row">
                   {categories.length > 0 &&
                     categories.map((category: string, index: number) => (
-                      <div key={index}>
+                      <div key={index} className="col">
                         <Form.Check
                           type={'checkbox'}
                           id={`categoryChk${index}`}
@@ -174,10 +174,10 @@ function Home() {
                       </div>
                     ))}
                 </div>
-                <div id="languages">
+                <div id="languages" className="row">
                   {languages.length > 0 &&
                     languages.map((language: string, index: number) => (
-                      <div key={index}>
+                      <div key={index} className="col">
                         <Form.Check
                           type={'checkbox'}
                           id={`languageChk${index}`}
@@ -206,7 +206,7 @@ function Home() {
         </Card>
       </Accordion>
       <ChannelList />
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} size="sm">
         <Modal.Header>
           <Modal.Title>Favourites</Modal.Title>
         </Modal.Header>
