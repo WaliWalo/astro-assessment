@@ -16,6 +16,7 @@ function ChannelList() {
     if (localStorage.getItem('favs') === null) {
       const newFavs = { favs: [] };
       localStorage.setItem('favs', JSON.stringify(newFavs));
+      dispatch(getFavourites(favs));
     } else {
       const favs = JSON.parse(localStorage.getItem('favs')!).favs;
       dispatch(getFavourites(favs));
