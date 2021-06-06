@@ -3,7 +3,6 @@ import { Accordion, Button, Card, Form } from 'react-bootstrap';
 import ChannelList from '../../components/ChannelList/ChannelList';
 import { useAppDispatch } from '../../store/setup/store';
 import './styles.css';
-import { useAppSelector } from './../../store/setup/store';
 import {
   findCategories,
   sortByChannelName,
@@ -17,12 +16,14 @@ import { getAllChannels, setChannels } from '../../store/channel/channelSlice';
 
 function Home() {
   const dispatch = useAppDispatch();
-  const channels = useAppSelector((state) => state.channels.data);
   const [toggleSort, setToggleSort] = useState<boolean>(false);
   const [categories, setCategories] = useState<Array<string>>([]);
   const [languages, setLanguages] = useState<Array<string>>([]);
+  // eslint-disable-next-line
   const [hd, setHd] = useState<boolean>(false);
+  // eslint-disable-next-line
   const [checkedCategories, setCheckedCategories] = useState<Array<string>>([]);
+  // eslint-disable-next-line
   const [checkedLanguages, setCheckedLanguages] = useState<Array<string>>([]);
 
   useEffect(() => {

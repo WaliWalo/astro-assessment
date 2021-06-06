@@ -31,22 +31,27 @@ export const getFavourites =
     try {
       dispatch(setLoading());
       let favourites: Array<IChannelDetails> = [];
-      channelIds.forEach(async (channelId) => {
-        const response = await fetch(
-          `${process.env.API_URL}/${channelId}.json`
-        );
-        if (response.ok) {
-          const data: IChannelDetailsResponse = await response.json();
-          if (data.responseCode >= 200 && data.responseCode <= 299) {
-            favourites.push(data.response);
+      if (channelIds.length > 0) {
+        channelIds.forEach(async (channelId) => {
+          const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/${channelId}.json`
+          );
+          if (response.ok) {
+            const data: IChannelDetailsResponse = await response.json();
+            console.log(data);
+            if (data.responseCode >= 200 && data.responseCode <= 299) {
+              favourites = [...favourites, data.response];
+              dispatch(setFavs(favourites));
+            } else {
+              dispatch(setError(data.responseMessage));
+            }
           } else {
-            dispatch(setError(data.responseMessage));
+            dispatch(setError(response.statusText));
           }
-        } else {
-          dispatch(setError(response.statusText));
-        }
-      });
-      dispatch(setFavs(favourites));
+        });
+      } else {
+        dispatch(setFavs([]));
+      }
     } catch (error) {
       dispatch(setError(error));
     }

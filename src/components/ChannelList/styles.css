@@ -9,7 +9,7 @@
   background-color: #fbeaff;
 }
 
-#singleChannelContainer:hover {
+#singleChannelTop > div.col-5:hover {
   cursor: pointer;
 }
 

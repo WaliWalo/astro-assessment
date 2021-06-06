@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
@@ -16,8 +16,6 @@ import { setChannels } from '../../store/channel/channelSlice';
 
 function SubHeader() {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {}, []);
 
   const searchFunction = async (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.currentTarget.value);
@@ -70,7 +68,7 @@ function SubHeader() {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 searchFunction(e)
               }
-              placeholder="Search"
+              placeholder="Search By Name or Number"
               className="mr-sm-2"
             />
             {/* <Button variant="outline-success">Search</Button> */}
