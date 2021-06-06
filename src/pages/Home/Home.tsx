@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Accordion, Button, Card, Form } from 'react-bootstrap';
+import { Accordion, Button, Card, Form, Modal, Image } from 'react-bootstrap';
 import ChannelList from '../../components/ChannelList/ChannelList';
 import { useAppDispatch } from '../../store/setup/store';
 import './styles.css';
@@ -13,8 +13,12 @@ import {
   filterByResolution,
 } from '../../utilities/filters';
 import { getAllChannels, setChannels } from '../../store/channel/channelSlice';
+import { useAppSelector } from './../../store/setup/store';
+import { IChannelDetails } from '../../store/channel/types';
+import { useHistory } from 'react-router-dom';
 
 function Home() {
+  const history = useHistory();
   const dispatch = useAppDispatch();
   const [toggleSort, setToggleSort] = useState<boolean>(false);
   const [categories, setCategories] = useState<Array<string>>([]);
@@ -25,6 +29,11 @@ function Home() {
   const [checkedCategories, setCheckedCategories] = useState<Array<string>>([]);
   // eslint-disable-next-line
   const [checkedLanguages, setCheckedLanguages] = useState<Array<string>>([]);
+  const [show, setShow] = useState(false);
+  const favs = useAppSelector((state) => state.fav);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     async function getCategories() {
@@ -142,6 +151,11 @@ function Home() {
                 <Button variant="light" onClick={sortNumber}>
                   Sort By Number
                 </Button>
+                {favs.data !== undefined && favs.data.length > 0 && (
+                  <Button variant="light" onClick={handleShow}>
+                    My Favourites
+                  </Button>
+                )}
               </div>
               <div id="checkBoxes">
                 <div id="categories">
@@ -192,6 +206,59 @@ function Home() {
         </Card>
       </Accordion>
       <ChannelList />
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>Favourites</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Accordion defaultActiveKey="0">
+            {favs.data !== undefined &&
+              favs.data.length > 0 &&
+              favs.data.map((fav: IChannelDetails, index: number) => (
+                <Card key={index}>
+                  <Card.Header>
+                    <Accordion.Toggle
+                      as={Button}
+                      variant="link"
+                      eventKey={`${index}`}
+                    >
+                      <div className="accordionHeader">
+                        <div>
+                          {fav.originalImage ? (
+                            <Image
+                              src={fav.originalImage}
+                              className="channelImage"
+                              onClick={() =>
+                                history.push(`/channelDetails/${fav.id}`)
+                              }
+                            />
+                          ) : (
+                            <Image
+                              src={fav.backupImage}
+                              className="channelImage"
+                            />
+                          )}
+                        </div>
+                        <div>
+                          <h2>CH{fav.stbNumber}</h2>
+                          <p>{fav.title}</p>
+                        </div>
+                      </div>
+                    </Accordion.Toggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey={`${index}`}>
+                    <Card.Body>{fav.description}</Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+              ))}
+          </Accordion>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

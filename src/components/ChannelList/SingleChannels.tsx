@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ISingleChannelsProp } from './types';
 import { Image, Spinner } from 'react-bootstrap';
 import './styles.css';
@@ -10,12 +10,9 @@ import { getFavourites } from './../../store/fav/favSlice';
 import { IChannelDetails } from '../../store/channel/types';
 
 function SingleChannels(props: ISingleChannelsProp) {
-  let history = useHistory();
-  let dispatch = useAppDispatch();
+  const history = useHistory();
+  const dispatch = useAppDispatch();
   const favs = useAppSelector((state) => state.fav);
-  // const [favourites, setFavourites] = useState([])
-
-  useEffect(() => {}, []);
 
   const addToFav = () => {
     const favArray = JSON.parse(localStorage.getItem('favs')!);

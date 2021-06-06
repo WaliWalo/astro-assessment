@@ -38,7 +38,6 @@ export const getFavourites =
           );
           if (response.ok) {
             const data: IChannelDetailsResponse = await response.json();
-            console.log(data);
             if (data.responseCode >= 200 && data.responseCode <= 299) {
               favourites = [...favourites, data.response];
               dispatch(setFavs(favourites));
